@@ -3,7 +3,7 @@ import type { Todo } from '../types';
 
 // API Base URL - use environment variable in production
 const API_BASE_URL = import.meta.env.PROD 
-    ? 'https://todo-backend-1xzvyrxrt-allan-aboks-projects.vercel.app/'
+    ? 'https://todo-backend-1xzvyrxrt-allan-aboks-projects.vercel.app'
     : '';
 
 interface TodoContextType {
@@ -35,12 +35,21 @@ export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const fetchTodos = async () => {
         try {
             setLoading(true);
+            console.log('Fetching todos from:', `${API_BASE_URL}/api/todos?filter=${filter}`);
+            
             const response = await fetch(`${API_BASE_URL}/api/todos?filter=${filter}`);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
             const data = await response.json();
+            console.log('Fetched todos:', data);
             setTodos(data);
             setError(null);
         } catch (err) {
-            setError('Failed to fetch todos');
+            console.error('Error fetching todos:', err);
+            setError(`Failed to fetch todos: ${err instanceof Error ? err.message : 'Unknown error'}`);
         } finally {
             setLoading(false);
         }

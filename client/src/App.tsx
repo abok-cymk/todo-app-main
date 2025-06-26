@@ -3,6 +3,7 @@ import { TodoProvider, useTodos } from './contexts/TodoContext';
 import TodoList from './components/TodoList';
 import TodoInput from './components/TodoInput';
 import TodoFilter from './components/TodoFilter';
+import HealthCheck from './components/HealthCheck';
 import { Toaster } from 'react-hot-toast';
 
 const baseImagePath = import.meta.env.BASE_URL;
@@ -62,6 +63,9 @@ const TodoApp: React.FC = () => {
                         )}
                     </button>
                 </div>
+
+                {/* Temporary debug component */}
+                <HealthCheck />
 
                 <div className="mb-6">
                     <TodoInput />
