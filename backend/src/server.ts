@@ -22,27 +22,59 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-AppDataSource.initialize()
-  .then(() => {
-    console.log("Data Source has been initialized!");
+// Health check endpoint (available even if DB fails)
+app.get("/api/health", (req, res) => {
+  res.json({
+    status: "OK",
+    message: "Server is running",
+    dbConnected: AppDataSource.isInitialized,
+  });
+});
 
-    // Health check endpoint
-    app.get("/api/health", (req, res) => {
-      res.json({ status: "OK", message: "Server is running" });
+// Initialize database and setup routes
+let dbInitialized = false;
+
+const initializeDatabase = async () => {
+  if (!dbInitialized) {
+    try {
+      await AppDataSource.initialize();
+      console.log("Data Source has been initialized!");
+      dbInitialized = true;
+    } catch (err) {
+      console.error("Error during Data Source initialization:", err);
+      throw err;
+    }
+  }
+};
+
+// Middleware to ensure DB is initialized
+app.use("/api/todos", async (req, res, next) => {
+  try {
+    await initializeDatabase();
+    next();
+  } catch (error) {
+    console.error("Database initialization failed:", error);
+    res.status(500).json({
+      error: "Database connection failed",
+      details: error instanceof Error ? error.message : "Unknown error",
     });
+  }
+});
 
-    app.use("/api/todos", todoRoutes);
+app.use("/api/todos", todoRoutes);
 
-    // For local development
-    if (process.env.NODE_ENV !== "production") {
+// For local development
+if (process.env.NODE_ENV !== "production") {
+  initializeDatabase()
+    .then(() => {
       app.listen(PORT, () => {
         console.log(`Server is running on http://localhost:${PORT}`);
       });
-    }
-  })
-  .catch((err) => {
-    console.error("Error during Data Source initialization:", err);
-  });
+    })
+    .catch((err) => {
+      console.error("Failed to start server:", err);
+    });
+}
 
 // Export the Express app for Vercel
 export default app;

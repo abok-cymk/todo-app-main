@@ -1,9 +1,17 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { Todo } from "./entities/Todo";
-import dotenv from "dotenv";
 
-dotenv.config();
+// Only load dotenv in development
+if (process.env.NODE_ENV !== "production") {
+  const dotenv = require("dotenv");
+  dotenv.config();
+}
+
+console.log("Environment check:", {
+  NODE_ENV: process.env.NODE_ENV,
+  DATABASE_URL: process.env.DATABASE_URL ? "✓ Set" : "✗ Missing",
+});
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -20,7 +28,7 @@ export const AppDataSource = new DataSource({
       ? { rejectUnauthorized: false }
       : false,
   synchronize: true,
-  logging: false,
+  logging: process.env.NODE_ENV !== "production",
   entities: [Todo],
   subscribers: [],
   migrations: [],
