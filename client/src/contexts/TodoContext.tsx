@@ -2,9 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import type { Todo } from '../types';
 
 // API Base URL - use environment variable in production
-const API_BASE_URL = import.meta.env.PROD 
-    ? 'https://todo-backend-1xzvyrxrt-allan-aboks-projects.vercel.app'
-    : '';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
 interface TodoContextType {
     todos: Todo[];
