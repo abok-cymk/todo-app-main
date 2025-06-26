@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "name": "todo-backend",
+  "builds": [
+    {
+      "src": "backend/src/server.ts",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["backend/src/**"]
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "backend/src/server.ts"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
+}

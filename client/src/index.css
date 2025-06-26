@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+    --font-josefinSans: "Josefin Sans", sans-serif;
+
+}
+
+@font-face {
+    font-family: "Josefin Sans";
+    font-weight: 400;
+    src: url("./assets/fonts/Josefin_Sans/static/JosefinSans-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Josefin Sans";
+    font-weight: 700;
+    src: url("./assets/fonts/Josefin_Sans/static/JosefinSans-Bold.ttf");
+}

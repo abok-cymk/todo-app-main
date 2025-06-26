@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    // Output directory
+    "outDir": "./dist",
+
+    // Root directory of your TypeScript source
+    "rootDir": "./src",
+
+    // ECMAScript module system and target version
+    "module": "commonjs",
+    "target": "es2020",
+
+    // Enable strict typing and error checks
+    "strict": true,
+    "strictPropertyInitialization": false,
+
+    // Enable experimental decorators for TypeORM
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
+    // Enable support for ES modules and import/export syntax
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+
+    // Generate sourcemaps to help with debugging
+    "sourceMap": true,
+
+    // Allow JavaScript files to be compiled
+    "allowJs": true,
+
+    // Include type declarations for Node.js
+    "types": ["node"]
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "tests"]
+}
